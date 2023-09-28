@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script src="{% static 'accounts_book/index.js' %}"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'accounts_book/style.css' %}">
+    <title>Domestic_Accounts</title>
+</head>
+<body>
+    <div id="container" class="container">
+
+        <div id="rest-amount-container" class="container">
+            {% for rest in rest_amounts %}
+                <div class="rest-amount">
+                    <p class="rest-amount-title">{{ rest.kind }}</p>
+                    <p class="rest-amount-value">{{ rest.rest_amount }}</p>
+                </div>
+            {% endfor %}
+
+            <div id="rest-amount-add" class="rest-amount">
+                <form action="rest-amount-add/" method="post">
+                    {% csrf_token %}
+                    <label for="rest-amount-input">追加する金額</label>
+                    <input type="text" name="rest_money" id="rest-amount-input">
+                    <input type="submit" value="追加" class="rest-amount-submit">
+                </form>
+            </div>
+        </div>
+        <!-- rest-amount-container -->
+
+        <div id="lists">
+            <table id="income" class="income-payment-table">
+                <thead>
+                    <tr>
+                        <th class="sort" data-sort="date">日付</th>
+                        <th class="sort" data-sort="kind">種類</th>
+                        <th class="sort" data-sort="price">金額</th>
+                    </tr>
+                </thead>
+                <tbody class="list">
+                    {% for income in incomes %}
+                        <tr>
+                            <td>{{ income.date }}</td>
+                            <td>{{ income.kind }}</td>
+                            <td title="{{ income.description }}">{{ income.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tr>
+                    <td><button id="income-add-button">+</button></td>
+                </tr>
+            </table>
+
+            <table id="payment" class="income-payment-table">
+                <thead>
+                    <tr>
+                        <th class="sort" data-sort="date">日付</th>
+                        <th class="sort" data-sort="kind">種類</th>
+                        <th class="sort" data-sort="price">金額</th>
+                    </tr>
+                </thead>
+                <tbody class="list">
+                    {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.date }}</td>
+                            <td>{{ payment.kind }}</td>
+                            <td title="{{ payment.description }}">{{ payment.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tr>
+                    <td><button id="payment-add-button">+</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="list-add-container" class="container">
+            <form action="income-payment-add/" method="post">
+                {% csrf_token %}
+                <div class="list-add">
+                    <label for="date">日付</label>
+                    <input type="date" name="date" id="date">
+                </div>
+                <div class="list-add">
+                    <label for="kind">種類</label>
+                    <input type="text" name="kind" id="kind">
+                </div>
+                <div class="list-add">
+                    <label for="price">金額</label>
+                    <input type="text" name="price" id="price">
+                </div>
+                <div class="list-add">
+                    <label for="description">金額</label>
+                    <input type="text" name="description" id="description">
+                </div>
+                <div class="list-add">
+                    <input type="submit" value="追加" class="list-add-submit">
+                </div>
+                <div class="list-add">
+                    <input type="text" name="income-or-payment" id="income-or-payment" style="display:none">
+                </div>
+            </form>
+        </div>
+        <!-- lists -->
+
+    </div>
+</body>
+</html>
